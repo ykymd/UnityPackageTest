@@ -1,0 +1,23 @@
+name: Create Unity Package
+
+on: push
+
+jobs:
+  echo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: |
+          echo "Assets/Scenes.meta" > metaList
+          find ./Assets/Scenes/ -name \*.meta >> metaList
+          
+      - run: mkdir release
+        
+      - uses: pCYSl5EDgo/create-unitypackage@master
+        with:
+          package-path: 'release/UnityPackageTest.unitypackage'
+          include-files: metaList
+      - uses: actions/upload-artifact@master
+        with:
+          path: release
+          name: package
